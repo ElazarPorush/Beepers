@@ -1,19 +1,19 @@
 [
     {
         "name": "B1",
-        "latitude": 342354325325.34235,
-        "longitude": 5646464.54536,
-        "id": 46806345748279576,
+        "latitude": 33.111,
+        "longitude": 35.1,
+        "id": 7855326634909998,
         "status": "detonated",
-        "created_at": "2024-09-26T08:41:42.262Z",
-        "detonated_at": "2024-09-26T12:35:14.106Z"
+        "created_at": "2024-09-26T13:43:28.815Z",
+        "detonated_at": "2024-09-26T14:41:15.873Z"
     },
     {
         "name": "B1",
         "latitude": 0,
         "longitude": 0,
-        "id": 27133605116496810,
-        "status": "detonated",
-        "created_at": "2024-09-26T08:41:43.313Z"
+        "id": 869502543962914,
+        "status": "manufactured",
+        "created_at": "2024-09-26T13:43:32.362Z"
     }
 ]

@@ -3,6 +3,7 @@ import LocationDto from "../DTO/locationDto";
 import NewBeeperDto from "../DTO/newBeeperDto";
 import Status from "../enums/status";
 import Beeper from "../models/beeper";
+import BeeperUtil from "../utils/beeperUtil";
 
 export default class BeeperService {
 
@@ -51,34 +52,23 @@ export default class BeeperService {
         //find beeper
         let beeper = beepers.find(beeper => beeper.id === id)
         //check validation
-        if (!beeper || beeper.status === "detonated" || (beeper.status === "shipped" && (!body || !body.latitude || !body.longitude))) {
-             return false
+        if (!beeper || beeper.status === "detonated" || (beeper.status === "shipped" && (!body || !body.latitude || !body.longitude || !BeeperUtil.checkIfInRange(body)))) {
+            return false
         }
-        //get index of status
-        const GetIndex = (status: string): number => {
-            return Status[status as keyof typeof Status]
-        }
-        const indexOfStatus = GetIndex(beeper.status)
         //change the status
+        const indexOfStatus = BeeperUtil.getIndex(beeper.status)
         if (!body || !body.status) {
             beeper.status = Status[indexOfStatus + 1]
-        }
-        else if(indexOfStatus + 1 === GetIndex(body.status)) {
+        } else if (indexOfStatus + 1 === BeeperUtil.getIndex(body.status)) {
             beeper.status = body.status
-        }
-        else {
+        } else {
             return false
         }
         //change the location
-        if (beeper.status === "deployed" || beeper.status === "detonated"){
-            beeper.latitude = body.latitude
-            beeper.longitude = body.longitude
-            setTimeout(() => {
-                console.log(1);
-                beeper.status = "detonated"
-                beeper.detonated_at = new Date()
-            }, 10000)
+        if (beeper.status === "deployed" || beeper.status === "detonated") {
+            beeper = BeeperUtil.changeLocation(beeper, body)
         }
+        //save changes
         return await saveFileData(beepers)
     }
 

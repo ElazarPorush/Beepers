@@ -1,9 +1,10 @@
 import fs from 'fs/promises'
+import Beeper from '../models/beeper'
 
-export const getFileData = async <T> (): Promise<T[] | void> => {
+export const getFileData = async (): Promise<Beeper[] | void> => {
     try {
         const strData: string = await fs.readFile(`${__dirname}/../../data/beepers.json`, 'utf-8')
-        const parsedData: T[] = JSON.parse(strData)
+        const parsedData: Beeper[] = JSON.parse(strData)
         return parsedData
     }
     catch (err) {
@@ -11,7 +12,7 @@ export const getFileData = async <T> (): Promise<T[] | void> => {
     }
 }
 
-export const saveFileData = async <T> (data:T[]): Promise<boolean> => {
+export const saveFileData = async (data:Beeper[]): Promise<boolean> => {
     try {
         const stringifiedData: string = JSON.stringify(data)
         await fs.writeFile(`${__dirname}/../../data/beepers.json`, stringifiedData, {

@@ -1,1 +1,19 @@
-[{"name":"B1","latitude":0,"longitude":0,"id":46806345748279576,"status":"manufactured","created_at":"2024-09-26T08:41:42.262Z"},{"name":"B1","latitude":0,"longitude":0,"id":27133605116496810,"status":"manufactured","created_at":"2024-09-26T08:41:43.313Z"}]
+[
+    {
+        "name": "B1",
+        "latitude": 342354325325.34235,
+        "longitude": 5646464.54536,
+        "id": 46806345748279576,
+        "status": "detonated",
+        "created_at": "2024-09-26T08:41:42.262Z",
+        "detonated_at": "2024-09-26T12:35:14.106Z"
+    },
+    {
+        "name": "B1",
+        "latitude": 0,
+        "longitude": 0,
+        "id": 27133605116496810,
+        "status": "detonated",
+        "created_at": "2024-09-26T08:41:43.313Z"
+    }
+]

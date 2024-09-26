@@ -74,7 +74,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
 
 router.put('/:id/status', async (req: Request, res: Response): Promise<void> => {
     try {
-        const result = await BeeperService.updateStatus(+req.params.id)
+        const result = await BeeperService.updateStatus(+req.params.id, req.body)
         if (result) {
             res.status(200).json({
                 err: false,
@@ -86,7 +86,7 @@ router.put('/:id/status', async (req: Request, res: Response): Promise<void> => 
         }
     }
     catch (err) {
-        res.status(404).json({
+        res.status(400).json({
             err: true,
             message: err || 'error'
         })

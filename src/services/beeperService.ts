@@ -1,4 +1,5 @@
 import { getFileData, saveFileData } from "../config/fileDataLayer";
+import LocationDto from "../DTO/locationDto";
 import NewBeeperDto from "../DTO/newBeeperDto";
 import Status from "../enums/status";
 import Beeper from "../models/beeper";
@@ -44,15 +45,41 @@ export default class BeeperService {
     }
 
     //change beeper's status 
-    public static async updateStatus(id: number): Promise<boolean> {
+    public static async updateStatus(id: number, body: LocationDto): Promise<boolean> {
         let beepers = await getFileData() as Beeper[]
         if (!beepers) beepers = []
         //find beeper
-        const beeper = beepers.find(beeper => beeper.id === id)
-        if (!beeper || beeper.status === "detonated") return false
+        let beeper = beepers.find(beeper => beeper.id === id)
+        //check validation
+        if (!beeper || beeper.status === "detonated" || (beeper.status === "shipped" && (!body || !body.latitude || !body.longitude))) {
+             return false
+        }
+        //get index of status
+        const GetIndex = (status: string): number => {
+            return Status[status as keyof typeof Status]
+        }
+        const indexOfStatus = GetIndex(beeper.status)
         //change the status
-        // beeper.status = Status[Status.(beeper.status) + 1]
-        return true
+        if (!body || !body.status) {
+            beeper.status = Status[indexOfStatus + 1]
+        }
+        else if(indexOfStatus + 1 === GetIndex(body.status)) {
+            beeper.status = body.status
+        }
+        else {
+            return false
+        }
+        //change the location
+        if (beeper.status === "deployed" || beeper.status === "detonated"){
+            beeper.latitude = body.latitude
+            beeper.longitude = body.longitude
+            setTimeout(() => {
+                console.log(1);
+                beeper.status = "detonated"
+                beeper.detonated_at = new Date()
+            }, 10000)
+        }
+        return await saveFileData(beepers)
     }
 
     //delete beeper
